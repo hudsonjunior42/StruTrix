@@ -587,17 +587,22 @@ class StruTrixMainWindow(QMainWindow):
         self.current_filepath = None
 
     def about_dialog(self):
+        github_url = "https://github.com/hudsonjunior42/StruTrix"
+        message = (
+        "<h2>StruTrix - Análise Estrutural Matricial</h2>"
+        "<p>Software desenvolvido como Trabalho de Conclusão de Curso (TCC) de Engenharia Civil.</p>"
+        "<hr>"
+        f"<p>Método de Análise: Método da Rigidez (FEM) para pórticos planos.</p>"
+        f"<p>Tecnologias: Python, PyQt5, Numpy, Pandas, Matplotlib.</p>"
+        "<hr>"
+        f"<p>Autor: Hudson Santos Menezes Júnior</p>"
+        f"<p>Instituição: Instituto Federal de Sergipe</p>"
+        f"<p>Código-Fonte (GitHub): <a href='{github_url}'>Acessar Repositório</a></p>"
+        f"<p>Versão Atual: v0.76.1-alpha</p>"
+    )
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Icon.Information)
-        msg.setText("StruTrix\n"
-        "Versão: 0.76\n" \
-        "\n" \
-        "Trabalho de Conclusão de Curso apresentado ao\n" \
-        "Instituto Federal de Sergipe como pré-requisito para\n" \
-        "a obtenção do grau de Bacharel em Engenharia Civil.\n" \
-        "\n" \
-        "Autor: Hudson Santos Menezes Júnior\n" \
-        "Instituição: Instituto Federal de Sergipe")
+        msg.setText(message)
         msg.setWindowTitle("Sobre")
         msg.setStandardButtons(QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel)
         retval = msg.exec()
