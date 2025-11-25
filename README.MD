@@ -94,7 +94,7 @@ O fluxo de trabalho no StruTrix é sequencial e baseado nas abas de entrada de d
       * Aplique as restrições aos nós (ex: engaste, apoio de 2º gênero).
 3.  **Carregamento (Abas "Cargas..."):**
       * Defina as forças e momentos aplicados nos nós ou as cargas distribuídas nas barras.
-5.  **Deslocamentos Prescritos:
+5.  **Deslocamentos Prescritos:**
      * Aplique deslocamentos prescritos (X, Y ou Rotação) nos nós.
 4.  **Cálculo:**
       * Clique no botão **"Calcular"**  para rodar a análise.
