@@ -1,3 +1,5 @@
+import os
+import sys
 import pandas as pd
 from PyQt5.QtWidgets import (
     QMainWindow, QWidget, QTabWidget, QVBoxLayout, QHBoxLayout,
@@ -15,6 +17,18 @@ from core.data_handler import DataHandler   # Importa o gerenciador de dados
 from core.file_manager import FileManager   # Importa o gerenciador de arquivos
 from graphics.plotter import StructuralPlotter, MatplotlibCanvas    # Importa o criador de diagramas
 
+# Retorna o caminho absoluto do arquivo para acesso a recursos.
+def resource_path(relative_path):
+    try:
+        # Pega o caminho de onde o PyInstaller extraiu os arquivos temporariamente
+        base_path = sys._MEIPASS
+    except Exception:
+        # Pega o caminho base do arquivo (modo de desenvolvimento)
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
+# Classe da janela do progama
 class StruTrixMainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -22,7 +36,7 @@ class StruTrixMainWindow(QMainWindow):
         self.title = "StruTrix"
         self.setWindowTitle(self.title)
         self.setGeometry(100, 100, 1000, 600)                                                       # Tamanho da janela (x, y, largura, altura)
-        self.setWindowIcon(QIcon('icon.png'))
+        self.setWindowIcon(QIcon(resource_path('icon.png')))
         self.setWindowFlags(Qt.Window)
 
         # INICIALIZA CLASSES AUXILIARES
