@@ -1,6 +1,9 @@
 # Python cache
 __pycache__/
 *.pyc
+*.spec
+build/
+dist/
 
 # Ambientes virtuais
 venv/

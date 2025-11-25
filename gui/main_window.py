@@ -590,7 +590,7 @@ class StruTrixMainWindow(QMainWindow):
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Icon.Information)
         msg.setText("StruTrix\n"
-        "Versão: 0.3\n" \
+        "Versão: 0.76\n" \
         "\n" \
         "Trabalho de Conclusão de Curso apresentado ao\n" \
         "Instituto Federal de Sergipe como pré-requisito para\n" \
