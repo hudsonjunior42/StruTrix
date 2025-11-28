@@ -204,9 +204,9 @@ class StructuralPlotter:
         scale = max_L / max_force_val * 0.2
 
         diagram_map = {
-            "Diagrama de Esforços Normais": (0, 'blue', 'N'), 
-            "Diagrama de Esforços Cisalhantes": (1, 'red', 'V'), 
-            "Diagrama de Momento Fletor": (2, 'green', 'M')
+            "Diagrama de Esforços Normais kN": (0, 'blue', 'N'), 
+            "Diagrama de Esforços Cisalhantes kN": (1, 'red', 'V'), 
+            "Diagrama de Momento Fletor kN.m": (2, 'green', 'M')
         }
         
         if current_view not in diagram_map: return
