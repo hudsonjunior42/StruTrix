@@ -29,7 +29,7 @@ class StructuralPlotter:
     def clear(self):
         self.ax.cla()
 
-    def draw_structure(self, nodes_df, bars_df, analysis_results, view_mode, show_grid, count_nodes, count_bars):
+    def draw_structure(self, nodes_df, bars_df, analysis_results, view_mode, show_grid, count_nodes, count_bars, show_reactions):
         self.clear()
         
         # Chama as sub-funções
@@ -41,6 +41,7 @@ class StructuralPlotter:
             self._plot_deformed_shape(analysis_results)
         elif 'Diagrama' in view_mode:
             self._plot_diagram(analysis_results, view_mode)
+            self._plot_reactions(nodes_df, analysis_results, show_reactions)
 
         # Configurações finais
         self.ax.set_xlabel('X (m)')
@@ -191,6 +192,33 @@ class StructuralPlotter:
                     text_pos = mid_point + perp_vec * arrow_len * 1.5 # Manter o texto afastado
                     self.canvas.axes.text(text_pos[0], text_pos[1], f'{p_val:.1f} kN/m', color='red', ha='center', va='center')
 
+    # Desenha reações de apoio
+    def _plot_reactions(self, nodes_df, analysis_results, show_reactions):
+        if show_reactions and analysis_results:
+            nodal_reactions = analysis_results['reactions']
+
+            # Carrega informações dos nós
+            coord = nodes_df[["X", "Y"]].values.astype(float)
+            
+            x_coords = coord[:, 0]
+            y_coords = coord[:, 1]
+            x_min, x_max = (x_coords.min(), x_coords.max()) if len(x_coords) > 0 else (0, 1)
+            y_min, y_max = (y_coords.min(), y_coords.max()) if len(y_coords) > 0 else (0, 1)
+            diag = math.sqrt((x_max - x_min)**2 + (y_max - y_min)**2)
+            scale = diag / 5 if diag > 0 else 0.6
+
+
+            for i in range(len(coord)):
+                if nodal_reactions[i, 0] != 0:
+                    self.canvas.axes.arrow(coord[i, 0] - np.sign(nodal_reactions[i, 0])*scale, coord[i, 1], np.sign(nodal_reactions[i, 0])*scale*0.8, 0, head_width=scale*0.1, color='brown', lw=1.5, zorder=5)
+                    self.canvas.axes.text(coord[i,0] - np.sign(nodal_reactions[i, 0])*scale*1.1, coord[i,1], f"{nodal_reactions[i,0]:.1f} kN", color='brown')
+                if nodal_reactions[i, 1] != 0:
+                    self.canvas.axes.arrow(coord[i, 0], coord[i, 1] - np.sign(nodal_reactions[i, 1])*scale, 0, np.sign(nodal_reactions[i, 1])*scale*0.8, head_width=scale*0.1, color='brown', lw=1.5, zorder=5)
+                    self.canvas.axes.text(coord[i,0], coord[i,1] - np.sign(nodal_reactions[i, 1])*scale*1.1, f"{nodal_reactions[i,1]:.1f} kN", color='brown')
+                if nodal_reactions[i, 2] != 0:
+                    self.canvas.axes.add_patch(plt.Circle((coord[i, 0], coord[i, 1]), scale*0.2, fill=False, edgecolor='brown', lw=2, zorder=4))
+                    self.canvas.axes.text(coord[i,0], coord[i,1] + scale*0.3, f" {nodal_reactions[i,2]:.1f} kN.m", color='brown')
+    
     def _plot_diagram(self, analysis_results, current_view):        
         if analysis_results is None: return
         

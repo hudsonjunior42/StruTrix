@@ -49,6 +49,7 @@ class StruTrixMainWindow(QMainWindow):
         self.show_grid = True               # Valor padrão
         self.count_nodes = True          # Valor padrão
         self.count_bars = True           # Valor padrão
+        self.show_reactions = True           # Valor padrão
         self.data_handler.analysis_results = None        # Sem resultados inicialmente
         
         self.init_ui()
@@ -183,6 +184,11 @@ class StruTrixMainWindow(QMainWindow):
         show_grid_action = QAction("Mostrar Grid", self, checkable=True, checked = True)
         show_grid_action.triggered.connect(self.show_grid_toggle)
         view_menu.addAction(show_grid_action)
+
+        ## Mostrar Reações de apoio
+        show_reactions_action = QAction("Mostrar Reações de Apoio", self, checkable=True, checked = True)
+        show_reactions_action.triggered.connect(self.show_reactions_toggle)
+        view_menu.addAction(show_reactions_action)
 
         ## -
         view_menu.addSeparator()
@@ -715,6 +721,15 @@ class StruTrixMainWindow(QMainWindow):
 
         self.update_plot()
 
+    # Alterar Exibição das reações de apoio
+    def show_reactions_toggle(self):
+        if self.show_reactions:
+            self.show_reactions = False
+        else:
+            self.show_reactions = True
+
+        self.update_plot()
+
     # --- Funções de população de tabelas
 
     def update_all_widgets(self):
@@ -1124,5 +1139,6 @@ class StruTrixMainWindow(QMainWindow):
             self.current_view,
             self.show_grid,
             self.count_nodes,
-            self.count_bars
+            self.count_bars,
+            self.show_reactions
         )

@@ -216,7 +216,8 @@ class StructuralSolver:
                 'connectivity': connectivity,
                 'lengths': lengths,
                 'distributed_loads': distributed_loads,
-                'scale_factor': scale_factor
+                'scale_factor': scale_factor,
+                'reactions': reactions_matrix
             }
             return results
         
