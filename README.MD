@@ -44,7 +44,6 @@ A organização do código separa claramente a interface de usuário (`main_wind
 | Arquivo/Diretório | Módulo Principal | Responsabilidade |
 | :--- | :--- | :--- |
 | `main.py` | - | Ponto de entrada da aplicação e configurações iniciais do sistema operacional. |
-| `main_window.py` | `StruTrixMainWindow` | **Gerenciamento da GUI (Views).** Define o layout, constrói as abas e trata os eventos do usuário (clicks, seleções). |
 | `core/` | - | **Módulos da Lógica de Domínio e Cálculo.** |
 | ├── `data_handler.py` | `DataHandler` | Gerencia e valida o estado do modelo (DataFrames de Nós e Barras). |
 | ├── `solver.py` | `StructuralSolver` | Implementa o algoritmo do **MEF**, realizando o cálculo estrutural. |
@@ -52,6 +51,8 @@ A organização do código separa claramente a interface de usuário (`main_wind
 | `graphics/` | - | **Módulos de Plotagem e Visualização.** |
 | ├── `plotter.py` | `StructuralPlotter` | Lógica Matplotlib para desenhar a geometria, apoios, cargas e diagramas. |
 | └── `MatplotlibCanvas` | `MatplotlibCanvas` | Integração do ambiente Matplotlib como um *widget* dentro do PyQt5. |
+| `gui/` | - | **Módulos relacionados a construção de elementtos de UI** |
+| └── `main_window.py` | `StruTrixMainWindow` | **Gerenciamento da GUI (Views).** Define o layout, constrói as abas e trata os eventos do usuário (clicks, seleções). |
 
 -----
 
