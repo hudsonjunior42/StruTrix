@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
+import matplotlib.patches as patches
 from matplotlib.transforms import Affine2D
 import numpy as np
 import math
@@ -139,14 +140,48 @@ class StructuralPlotter:
         nodal_loads = nodes_df[["Fx", "Fy", "Mz"]].values.astype(float)
         for i in range(len(coord)):
             if nodal_loads[i, 0] != 0:
-                self.canvas.axes.arrow(coord[i, 0] - np.sign(nodal_loads[i, 0])*scale, coord[i, 1], np.sign(nodal_loads[i, 0])*scale*0.8, 0, head_width=scale*0.1, color='blue', lw=1.5, zorder=5)
-                self.canvas.axes.text(coord[i,0] - np.sign(nodal_loads[i, 0])*scale*1.1, coord[i,1], f"{nodal_loads[i,0]:.1f} kN", color='blue')
+                self.canvas.axes.arrow(coord[i, 0] - np.sign(nodal_loads[i, 0])*scale, 
+                                       coord[i, 1], 
+                                       np.sign(nodal_loads[i, 0])*scale*0.8, 0, 
+                                       head_width=scale*0.1, 
+                                       color='blue', 
+                                       lw=1.5, 
+                                       zorder=5)
+                
+                self.canvas.axes.text(coord[i,0] - np.sign(nodal_loads[i, 0])*scale*1.1, 
+                                      coord[i,1], 
+                                      f"{nodal_loads[i,0]:.1f} kN", 
+                                      color='blue')
+                
             if nodal_loads[i, 1] != 0:
-                self.canvas.axes.arrow(coord[i, 0], coord[i, 1] - np.sign(nodal_loads[i, 1])*scale, 0, np.sign(nodal_loads[i, 1])*scale*0.8, head_width=scale*0.1, color='blue', lw=1.5, zorder=5)
-                self.canvas.axes.text(coord[i,0], coord[i,1] - np.sign(nodal_loads[i, 1])*scale*1.1, f"{nodal_loads[i,1]:.1f} kN", color='blue')
+                self.canvas.axes.arrow(coord[i, 0], 
+                                       coord[i, 1] - np.sign(nodal_loads[i, 1])*scale, 
+                                       0, 
+                                       np.sign(nodal_loads[i, 1])*scale*0.8, 
+                                       head_width=scale*0.1, 
+                                       color='blue', 
+                                       lw=1.5, 
+                                       zorder=5)
+                
+                self.canvas.axes.text(coord[i,0], 
+                                      coord[i,1] - np.sign(nodal_loads[i, 1])*scale*1.1, 
+                                      f"{nodal_loads[i,1]:.1f} kN", 
+                                      color='blue')
+                
             if nodal_loads[i, 2] != 0:
-                 self.canvas.axes.add_patch(plt.Circle((coord[i, 0], coord[i, 1]), scale*0.2, fill=False, edgecolor='green', lw=2, zorder=4))
-                 self.canvas.axes.text(coord[i,0], coord[i,1] + scale*0.3, f" {nodal_loads[i,2]:.1f} kN.m", color='green')
+
+                if nodal_loads[i, 2] < 0: 
+                    self.canvas.axes.add_patch(patches.FancyArrowPatch((coord[i, 0]-0.3*scale, coord[i, 1]),
+                                                                   (coord[i, 0]+0.3*scale, coord[i, 1]), 
+                                                                   connectionstyle="arc3,rad=-1", 
+                                                                   **dict(arrowstyle="Simple, tail_width=0.5, head_width=4, head_length=8", color="green")))
+                else:
+                    self.canvas.axes.add_patch(patches.FancyArrowPatch((coord[i, 0]+0.3*scale, coord[i, 1]),
+                                                                   (coord[i, 0]-0.3*scale, coord[i, 1]), 
+                                                                   connectionstyle="arc3,rad=1", 
+                                                                   **dict(arrowstyle="Simple, tail_width=0.5, head_width=4, head_length=8", color="green")))
+                    
+                self.canvas.axes.text(coord[i,0], coord[i,1] + scale*0.3, f" {nodal_loads[i,2]:.1f} kN.m", color='green')
 
         # Desenha cargas distribuídas
         if not bars_df.empty:

@@ -51,6 +51,7 @@ class StruTrixMainWindow(QMainWindow):
         self.count_bars = True           # Valor padrão
         self.show_reactions = True           # Valor padrão
         self.data_handler.analysis_results = None        # Sem resultados inicialmente
+        self.openfilepath = None
         
         self.init_ui()
         self.update_all_widgets()
