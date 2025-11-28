@@ -41,8 +41,8 @@ class StructuralPlotter:
         elif view_mode == 'Deformação':
             self._plot_deformed_shape(analysis_results)
         elif 'Diagrama' in view_mode:
-            self._plot_diagram(analysis_results, view_mode)
             self._plot_reactions(nodes_df, analysis_results, show_reactions)
+            self._plot_diagram(analysis_results, view_mode)
 
         # Configurações finais
         self.ax.set_xlabel('X (m)')
@@ -251,7 +251,16 @@ class StructuralPlotter:
                     self.canvas.axes.arrow(coord[i, 0], coord[i, 1] - np.sign(nodal_reactions[i, 1])*scale, 0, np.sign(nodal_reactions[i, 1])*scale*0.8, head_width=scale*0.1, color='brown', lw=1.5, zorder=5)
                     self.canvas.axes.text(coord[i,0], coord[i,1] - np.sign(nodal_reactions[i, 1])*scale*1.1, f"{nodal_reactions[i,1]:.1f} kN", color='brown')
                 if nodal_reactions[i, 2] != 0:
-                    self.canvas.axes.add_patch(plt.Circle((coord[i, 0], coord[i, 1]), scale*0.2, fill=False, edgecolor='brown', lw=2, zorder=4))
+                    if nodal_reactions[i, 2] < 0: 
+                        self.canvas.axes.add_patch(patches.FancyArrowPatch((coord[i, 0]-0.3*scale, coord[i, 1]),
+                                                                    (coord[i, 0]+0.3*scale, coord[i, 1]), 
+                                                                    connectionstyle="arc3,rad=-1", 
+                                                                    **dict(arrowstyle="Simple, tail_width=0.5, head_width=4, head_length=8", color="brown")))
+                    else:
+                        self.canvas.axes.add_patch(patches.FancyArrowPatch((coord[i, 0]+0.3*scale, coord[i, 1]),
+                                                                    (coord[i, 0]-0.3*scale, coord[i, 1]), 
+                                                                    connectionstyle="arc3,rad=1", 
+                                                                    **dict(arrowstyle="Simple, tail_width=0.5, head_width=4, head_length=8", color="brown")))
                     self.canvas.axes.text(coord[i,0], coord[i,1] + scale*0.3, f" {nodal_reactions[i,2]:.1f} kN.m", color='brown')
     
     def _plot_diagram(self, analysis_results, current_view):        
@@ -267,9 +276,9 @@ class StructuralPlotter:
         scale = max_L / max_force_val * 0.2
 
         diagram_map = {
-            "Diagrama de Esforços Normais kN": (0, 'blue', 'N'), 
-            "Diagrama de Esforços Cisalhantes kN": (1, 'red', 'V'), 
-            "Diagrama de Momento Fletor kN.m": (2, 'green', 'M')
+            "Diagrama de Esforços Normais": (0, 'blue', 'N'), 
+            "Diagrama de Esforços Cisalhantes": (1, 'red', 'V'), 
+            "Diagrama de Momento Fletor": (2, 'green', 'M')
         }
         
         if current_view not in diagram_map: return
